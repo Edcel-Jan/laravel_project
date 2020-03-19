@@ -18,3 +18,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('/admin/user','AdminUsersController');
+
+Route::resource('/admin/post','PostController');
+
+
+// Route::get('/template',function(){
+//     // return view('layouts.template');
+// });
+
+// Route::group(['prefix' => 'admin'], function () {
+    
+// });
