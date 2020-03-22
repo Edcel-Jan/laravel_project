@@ -33,8 +33,13 @@
                     </div>
                 </div>
                 <div class="card-body">  
-                
-                <form  method="post" action = '{{ route('user.update',$user->id) }}' >
+                <div class="row">
+                    <div class="col-lg-6 offset-3 mb-3">
+                    <h4 class="card-title mb-2"> User Image</h4>
+                        <img height="70" width="100" src="{{ $user->photo ? asset($user->photo->path): "No Image" }}" alt="">
+                    </div>
+                </div>
+                <form  method="post" action = '{{ route('user.update',$user->id) }}' enctype='multipart/form-data' >
                         @csrf
                             <input type="hidden" name="_method" value='PUT'>
                             <div class="col-lg-6 offset-3">
@@ -54,13 +59,13 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-lg-6 offset-3">
+                        <div class="col-lg-6 offset-3">
                             <div class="form-group {{ $errors->has('password') ? 'has-error' :'' }}">
                                 <label for="password">Enter Password</label>
-                                <input type="password"  value="{{ decrypt($user->password) }}" id="password" name="password" placeholder="Enter Password" class="form-control">
+                                <input type="password" id="password" name="password" placeholder="Enter Password" class="form-control">
                                 {!! $errors->first('password','<span class="text-danger">:message</span>') !!}
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="col-lg-6 offset-3">
                             <label for="role">Choose Role</label>
@@ -71,6 +76,24 @@
                                 <option value="3">Author</option>
                                 <option  value="4">User</option>
                             </select>
+                        </div>
+                        <div class="col-lg-6 offset-3">
+                            <label for="is_active">Choose Status</label>
+                            <div class="form-group">
+                                <select name="is_active" id="is_active"  class="form-control">
+                                    <option value="" selected disabled>-- Choose Status --</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Not Active</option>
+                                   
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 offset-3">
+                            <div class="form-group">
+                                <label for="user_upload">Choose File</label>
+                                <input type="file" id="user_upload" name="user_upload" class="form-control">
+                            </div>
                         </div>
                             {{-- <div class="col-lg-6 offset-3">
                                 <div class="form-group {{ $errors->has('content') ? 'has-error' :'' }}">
@@ -105,6 +128,7 @@
          $(document).ready(function(){
             document.getElementById('nav_user').classList.add('active');
             document.getElementById('role_id').value = '{{ $user->role->id }}';
+            document.getElementById('is_active').value = '{{ $user->is_active }}';
         });
        
     </script>

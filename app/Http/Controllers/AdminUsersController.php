@@ -38,7 +38,7 @@ class AdminUsersController extends Controller
      */
     public function store(UserRequest $request)
     {      
-        $user = new User();
+        // $user = new User();
         $input = $request->all();
 
         if($file = $request->file('user_upload'))
@@ -46,18 +46,21 @@ class AdminUsersController extends Controller
             $name = time().$file->getClientOriginalName();
             $file->move('images',$name);
             $photo = Photo::create(['path'=>$name]);
-            $user->photo_id = $photo->id;
+            $input['photo_id'] = $photo->id;
 
+        }
+        else
+        {
+            $input['photo_id'] = 0;
         }
 
        
+              
+        $input['password']=bcrypt($request->password);
+
+        User::create($input); 
         
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->password =bcrypt($request->password);
-        $user->role_id = $request->role_id;
-        
-        $user->save();
+       
         
 
          return redirect()->action('AdminUsersController@create')->with('success',"Record Has Been Saved");
@@ -104,10 +107,32 @@ class AdminUsersController extends Controller
         ]);
 
         $user = User::findOrfail($id);
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->role_id = $request->role_id;
-        $user->save();
+      
+
+        if(trim($request->password) == "")
+        {
+            $input = $request->except('password');
+
+        }else {
+            $input = $request->all();
+            $input['password'] = bcrypt($request->password);
+        }
+
+       
+        if($file = $request->file('user_upload'))
+        {
+            $name = time().$file->getClientOriginalName();
+            $input['path'] = $name;
+            $file->move('images',$name);
+            $photo = Photo::create(['path' => $name]);
+            $input['photo_id'] = $photo->id;
+        }
+
+        
+       
+        
+        $user->update($input);
+
         
         return redirect()->action('AdminUsersController@index')->with('success','User Has Been Updated');
 

@@ -74,6 +74,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-6 offset-3">
+                            <label for="is_active">Choose Status</label>
+                            <div class="form-group">
+                                <select name="is_active" id="is_active" value='{{ old('is_active') }}' class="form-control">
+                                    <option value="" selected disabled>-- Choose Status --</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Not Active</option>
+                                   
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="col-lg-6 offset-3">
                             <div class="form-group">

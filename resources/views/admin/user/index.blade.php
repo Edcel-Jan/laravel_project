@@ -38,6 +38,7 @@
                         <table class="table table-hover table-bordered pd-0 text-center"  id="table_curriculum">
                             <thead >
                                 <tr>
+                                    <th>Image</th>
                                     <th>Email</th>
                                     <th>Fullname</th>
 
@@ -52,6 +53,9 @@
                                     @foreach ($users as $user)
                                         <tr>
                                             <td>
+                                                <img height="40" width="40" src="{{ $user->photo ? asset($user->photo->path) : 'no file' }}" alt="">  
+                                            </td>
+                                            <td>
                                                 {{ $user->email }}
                                             </td>
                                             <td>
@@ -64,7 +68,7 @@
                                                 {{ $user->is_active == 1 ? 'Active' : 'Not Active' }}
                                             </td>
                                             <td>
-                                                {{ $user->created_at }}
+                                                {{ $user->created_at->diffForHumans() }}
                                             </td>
                                             <td>
                                             <a href = '{{ route('user.edit',$user->id) }}' class="btn btn-sm btn-success" >Update</a>
@@ -91,7 +95,7 @@
 
 
 @section('script')
-    <script>
+    <script>    
         $(document).ready(function(){
             document.getElementById('nav_user').classList.add('active');
         });

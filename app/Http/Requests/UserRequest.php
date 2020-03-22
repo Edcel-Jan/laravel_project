@@ -27,7 +27,8 @@ class UserRequest extends FormRequest
             'email' =>  'required',
             'name' =>   'required|min:4|max:50',
             'password' =>  'required|min:4|max:50',
-            'role_id' => 'required'
+            'role_id' => 'required',
+            'is_active' =>'required',
         ];
     }
 }
