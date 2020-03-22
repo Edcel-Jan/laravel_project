@@ -23,6 +23,8 @@ Route::resource('/admin/user','AdminUsersController');
 
 Route::resource('/admin/post','PostController');
 
+Route::resource('/admin/categories','CategoryController');
+
 
 // Route::get('/template',function(){
 //     // return view('layouts.template');

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\UserRequest;
-
+use App\User;
 class AdminUsersController extends Controller
 { 
     /**
@@ -15,7 +15,8 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        return view('admin.user.index');
+        $users = User::paginate(5);
+        return view('admin.user.index')->with('users',$users);
     }
 
     /**
@@ -37,9 +38,17 @@ class AdminUsersController extends Controller
     public function store(UserRequest $request)
     {      
         
+        $user = new User();
+
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->password =bcrypt($request->password);
+        $user->role_id = $request->role_id;
+        
+        $user->save();
         
 
-        //  return redirect()->action('AdminUsersController@create')->with('success',"Record Has Been Saved");
+         return redirect()->action('AdminUsersController@create')->with('success',"Record Has Been Saved");
 
     }
 
@@ -62,7 +71,9 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrfail($id);
+
+        return view('admin.user.update')->with('user',$user);
     }
 
     /**
@@ -74,7 +85,20 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required',
+            'email' =>'required',
+            'role_id' => 'required'
+        ]);
+
+        $user = User::findOrfail($id);
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->role_id = $request->role_id;
+        $user->save();
+        
+        return redirect()->action('AdminUsersController@index')->with('success','User Has Been Updated');
+
     }
 
     /**

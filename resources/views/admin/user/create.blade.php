@@ -34,7 +34,7 @@
                 </div>
                 <div class="card-body">  
                 
-                <form  method="post" action = '{{ route('user.store') }}' >
+                <form  method="post" action = '{{ route('user.store') }}' enctype="multipart/form-data" >
                         @csrf
                         
                             <div class="col-lg-6 offset-3">
@@ -64,12 +64,22 @@
 
                         <div class="col-lg-6 offset-3">
                             <label for="role">Choose Role</label>
-                        <select name="role_id" id="role_id" value='{{ old('role_id') }}' class="form-control">
-                                <option value="" selected disabled>-- Choose Role --</option>
-                                <option value="2">Subscriber</option>
-                                <option value="3">Author</option>
-                                <option value="4">User</option>
-                            </select>
+                            <div class="form-group">
+                                <select name="role_id" id="role_id" value='{{ old('role_id') }}' class="form-control">
+                                    <option value="" selected disabled>-- Choose Role --</option>
+                                    <option value="1">Administrator</option>
+                                    <option value="2">Subscriber</option>
+                                    <option value="3">Author</option>
+                                    <option value="4">User</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 offset-3">
+                            <div class="form-group">
+                                <label for="user_upload">Choose File</label>
+                                <input type="file" id="user_upload" name="user_upload" class="form-control">
+                            </div>
                         </div>
                             {{-- <div class="col-lg-6 offset-3">
                                 <div class="form-group {{ $errors->has('content') ? 'has-error' :'' }}">
@@ -94,9 +104,9 @@
 
 
 @section('script')
-    {{-- <script>
+    <script>
         $(document).ready(function(){
             document.getElementById('nav_user').classList.add('active');
         });
-    </script> --}}
+    </script>
 @endsection

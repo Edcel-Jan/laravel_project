@@ -135,7 +135,7 @@
 							</li>
 						
 							<li class="nav-item" id="nav_user">
-								<a href="/">
+							<a href="{{ route('user.index') }}">
 									<i class="fas fa-user-plus"></i>
 									<p>Manage User</p>
 									<!-- <span class="badge badge-success">4</span> -->
@@ -143,14 +143,14 @@
 							</li>
 
 							<li class="nav-item" id="nav_category">
-								<a href="/">
+								<a href="{{ route('categories.index') }}">
 									<i class="fas fa-book"></i>
 									<p>Manage Categories</p>
 									<!-- <span class="badge badge-success">4</span> -->
 								</a>
 							</li>
 							<li class="nav-item" id="nav_post">
-							<a href="/">
+							<a href="{{ route('post.index') }}">
 									<i class="fas fa-pen"></i>
 									<p>Manage Post</p>
 									<!-- <span class="badge badge-success">4</span> -->

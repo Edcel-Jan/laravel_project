@@ -19,7 +19,9 @@
                     
         </ul>
     </div>
-    <div class="row mt--2">
+
+    @include('layouts.success')
+    <div class="row mt-2">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -38,15 +40,47 @@
                                 <tr>
                                     <th>Email</th>
                                     <th>Fullname</th>
+
                                     <th>Role</th>
+                                    <th>Active</th>
                                     <th>Date Added</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id='tbody_curriculum'>
-                                
+                                @if (count($users) > 0)
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <td>
+                                                {{ $user->email }}
+                                            </td>
+                                            <td>
+                                                {{ $user->name }}
+                                            </td>
+                                            <td>
+                                                {{ $user->role->name }}
+                                            </td>
+                                            <td style="{{ $user->is_active == 1 ? 'color:green' : 'color:red' }}">
+                                                {{ $user->is_active == 1 ? 'Active' : 'Not Active' }}
+                                            </td>
+                                            <td>
+                                                {{ $user->created_at }}
+                                            </td>
+                                            <td>
+                                            <a href = '{{ route('user.edit',$user->id) }}' class="btn btn-sm btn-success" >Update</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="float-right">
+                                {{ $users->links() }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
