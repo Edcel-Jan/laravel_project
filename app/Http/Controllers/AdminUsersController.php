@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\UserRequest;
 use App\User;
+use App\Photo;
 class AdminUsersController extends Controller
 { 
     /**
@@ -37,9 +38,20 @@ class AdminUsersController extends Controller
      */
     public function store(UserRequest $request)
     {      
-        
         $user = new User();
+        $input = $request->all();
 
+        if($file = $request->file('user_upload'))
+        {
+            $name = time().$file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo = Photo::create(['path'=>$name]);
+            $user->photo_id = $photo->id;
+
+        }
+
+       
+        
         $user->email = $request->email;
         $user->name = $request->name;
         $user->password =bcrypt($request->password);
