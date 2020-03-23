@@ -35,24 +35,43 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
+                        
                         <table class="table table-hover table-bordered pd-0 text-center" >
                             <thead >
                                 <tr>
+                                    <th>Image</th>
+                                    <th>Author</th>
+                                    <th>Category</th>
                                     <th>Title</th>
                                     <th>Update</th>
                                     <th>Delete</th>
                                 </tr>
+                                
                             </thead>
                             <tbody>
                                 @if (count($posts) > 0)
                                    @foreach ($posts as $post)
                                        <tr>
                                             <td>
+                                                <img  height="50" width="50" src="{{ asset(  $post->photo ? $post->photo->path : 'no-image') }}" alt="">
+                                            </td>
+
+                                            <td>
+                                                {{ $post->user->name }}
+                                            </td>
+
+                                            <td>
+                                                {{ $post->category->name }}
+                                             </td>
+
+                                            <td>
                                                {{ $post->title }}
                                             </td>
+
                                             <td>
                                                 <a href='/admin/post/{{$post->id}}/edit' class='btn btn-success btn-sm' id="{{ $post->id }}"  title="Update Post"> <i class="fas fa-pen"></i> </a>
                                             </td>
+
                                             <td>
                                                 <form action="{{ route('post.destroy',$post->id) }}" method='POST'>
                                                     @csrf
@@ -62,8 +81,6 @@
                                             </td>
                                        </tr>
                                    @endforeach
-
-                                  
                                 @endif
                             </tbody>
 

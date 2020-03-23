@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 use App\Post;
+use App\Photo;
+use App\Category;
 
 use App\Http\Requests\PostRequest;
+use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     /**
@@ -26,7 +30,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.post.create');
+     
+        $categories = Category::all();
+        return view('admin.post.create', compact('categories'));
     }
 
     /**
@@ -37,8 +43,19 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-       
-        Post::create(['title' => $request->title, 'content' => $request->content]);
+        $input = $request->all();
+
+        if($file = $request->file('post_upload'))
+        {
+            $name = time().$file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['path'=> $name]);
+            $input['photo_id'] = $photo->id;
+        }
+
+        $input['user_id'] = Auth::user()->id;
+        Post::create($input);
+
         return  redirect()->action('PostController@create')->with('success','Record Has Been Save');
         
     }
@@ -63,7 +80,8 @@ class PostController extends Controller
     public function edit($id)
     {
        $post = Post::findOrfail($id);
-       return view('admin.post.update')->with('post',$post);
+       $categories = Category::all();
+       return view('admin.post.update',compact(['post','categories']));
     }
 
     /**
@@ -73,15 +91,38 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $post = Post::findOrfail($id);
-        
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->save();
 
+        $post = Post::findOrfail($id);
+        $input = $request->all();
+       
+      
+      
+
+        $this->validate($request, [
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => 'required'
+        ]);
+
+       
+        if($file = $request->file('post_upload'))
+        {
+            $name = time() . $file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo = Photo::create(['path'=>$name]);
+            $input['photo_id'] = $photo->id;
+        }
+        
+        $post->update($input);
         return redirect()->action('PostController@index')->with('success','Post Has Been Updated');
+        // $post->title = $request->title;
+        // $post->content = $request->content;
+       
+        // $post->save();
+
+        
     }
 
     /**
@@ -93,7 +134,9 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrfail($id);
+        $path = $post->photo->path;
+        unlink(public_path().'/'.$path);
         $post->delete();
-       return redirect()->action('PostController@index')->with('success','Record Has Been Deleted');
+        return redirect('/admin/post')->with('success','Record Has Been Deleted');
     }
 }

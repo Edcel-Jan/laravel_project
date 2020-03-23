@@ -25,7 +25,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-head-row">
-                        <div class="card-title">Create Post</div>
+                        <div class="card-title">Update Post</div>
                         <div class="card-tools" >
                             {{-- <button type="button" data-toggle = 'modal' id="add_curriculum" data-target = '#modal_add_curriculum' class="btn btn-primary btn-sm"> Add Curriculum <i class="fas fa-plus-circle"></i></button> --}}
                             <a href="/admin/post" class="btn btn-primary btn-sm"> Back To Post &nbsp; <i class="fas fa-backward"></i></a>
@@ -33,8 +33,14 @@
                     </div>
                 </div>
                 <div class="card-body">  
-                
-                <form  method="post" action ='{{ route('post.update',$post->id) }}' >
+                <div class="row">
+                    <div class="col-lg-6 offset-3">
+                        <h4 class="card-title">Image Post</h4>
+                        <img width="100" height="80" src="{{ asset($post->photo->path) }}" alt="" >
+                        
+                    </div>
+                </div>
+                <form  method="post" action ='{{ route('post.update',$post->id) }}' enctype="multipart/form-data" >
                         @csrf
                         <div class="row">
                             <div class="col-lg-6 offset-3">
@@ -45,16 +51,41 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 offset-3">
+                                <div class="form-group {{ $errors->has('category_id') ? 'has-error' :'' }}">
+                                    <label for="category_id">Choose Category</label>
+                                    <select name="category_id" id="category_id" class="form-control">
+                                        <option value="" selected disabled>--Choose Category --</option>
+                                        @if (count($categories) > 0)
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}">{{ $category->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 offset-3">
+                                <div class="form-group">
+                                    <label for="post_upload">Choose File</label>
+                                    <input type="file" name="post_upload" id="post_upload" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 offset-3">
                                 <div class="form-group {{ $errors->has('content') ? 'has-error' :'' }}">
-                                    <label for="content">Enter Content</label>
-                                    <input type="text" id="content"   value="{{ $post->content }}"   name="content" placeholder="Enter Content" class="form-control">
+                                    <label for="content">Enter Description</label>
+                                    <textarea  name="content" id="content" placeholder="Enter Description"   class="form-control" cols="30" rows="10">{{ $post->content }}</textarea>
+                                    {{-- <input type="text" id="content"   value="{{ $post->content }}"   name="content" placeholder="Enter Content" class="form-control"> --}}
                                     {!! $errors->first('content','<span class="text-danger">:message</span>') !!}
                                 </div>
                             </div>
+                          
+
+
                             <input type="hidden" name="_method" value="PUT" >
 
                             <div class="mt-2 col-lg-6 offset-3">
-                                <button type="submit" class="btn btn-primary btn-sm "> Save <i class="fas fa-envelope"></i></button>
+                                <button type="submit" class="btn btn-primary btn-sm "> Update Post <i class="fas fa-envelope"></i></button>
                             </div>
                         </div>
                     </form>
@@ -68,9 +99,9 @@
 
 
 @section('script')
-    {{-- <script>
+    <script>
         $(document).ready(function(){
-            document.getElementById('nav_user').classList.add('active');
+            document.getElementById('category_id').value = {{ $post->category_id }};
         });
-    </script> --}}
+    </script>
 @endsection

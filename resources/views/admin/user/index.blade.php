@@ -45,7 +45,8 @@
                                     <th>Role</th>
                                     <th>Active</th>
                                     <th>Date Added</th>
-                                    <th>Action</th>
+                                    <th>Update</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody id='tbody_curriculum'>
@@ -71,7 +72,19 @@
                                                 {{ $user->created_at->diffForHumans() }}
                                             </td>
                                             <td>
-                                            <a href = '{{ route('user.edit',$user->id) }}' class="btn btn-sm btn-success" >Update</a>
+                                                <a href = '{{ route('user.edit',$user->id) }}' class="btn btn-sm btn-success" >Update</a>
+                                             
+                                               
+
+                                            </td>
+                                            <td>
+                                                
+                                                <form id="form-user-delete" action=" {{ route('user.destroy', $user->id) }} " method="POST" >
+                                                    @csrf
+                                                    <input type="hidden" name="_method" value='DELETE'>
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                   
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

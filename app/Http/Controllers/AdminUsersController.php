@@ -124,6 +124,10 @@ class AdminUsersController extends Controller
             $name = time().$file->getClientOriginalName();
             $input['path'] = $name;
             $file->move('images',$name);
+
+            $path = $user->photo->path;
+            unlink(public_path().'/'.$path);
+
             $photo = Photo::create(['path' => $name]);
             $input['photo_id'] = $photo->id;
         }
@@ -146,6 +150,13 @@ class AdminUsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+       
+
+        $user =  User::findOrfail($id);
+        $path = $user->photo->path;
+        unlink(public_path().'/'.$path);
+        $user->delete();
+
+       return redirect()->action('AdminUsersController@index')->with('success','User Successfully Deleted');
     }
 }

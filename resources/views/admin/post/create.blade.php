@@ -34,7 +34,7 @@
                 </div>
                 <div class="card-body">  
                 
-                <form  method="post" action = '{{ route('post.store') }}' >
+                <form  method="post" action = '{{ route('post.store') }}' enctype="multipart/form-data" >
                         @csrf
                         <div class="row">
                             <div class="col-lg-6 offset-3">
@@ -45,15 +45,36 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 offset-3">
+                                <div class="form-group {{ $errors->has('category_id') ? 'has-error' :'' }}">
+                                    <label for="category_id">Choose Category</label>
+                                    <select name="category_id" id="category_id" class="form-control">
+                                        <option value="" selected disabled>--Choose Category --</option>
+                                        @if (count($categories) > 0)
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}">{{ $category->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 offset-3">
+                                <div class="form-group">
+                                    <label for="post_upload">Choose File</label>
+                                    <input type="file" name="post_upload" id="post_upload" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 offset-3">
                                 <div class="form-group {{ $errors->has('content') ? 'has-error' :'' }}">
-                                    <label for="content">Enter Content</label>
-                                    <input type="text" id="content"   value="{{ old('content') }}"   name="content" placeholder="Enter Content" class="form-control">
+                                    <label for="content">Enter Description</label>
+                                    <textarea name="content" id="content" placeholder="Enter Description" class="form-control" cols="30" rows="10"></textarea>
+                                    {{-- <input type="text" id="content"   value="{{ old('content') }}"   name="content" placeholder="Enter Content" class="form-control"> --}}
                                     {!! $errors->first('content','<span class="text-danger">:message</span>') !!}
                                 </div>
                             </div>
+                          
 
                             <div class="mt-2 col-lg-6 offset-3">
-                                <button type="submit" class="btn btn-primary btn-sm "> Save <i class="fas fa-envelope"></i></button>
+                                <button type="submit" class="btn btn-primary btn-sm "> Save Post &nbsp; <i class="fas fa-envelope"></i></button>
                             </div>
                         </div>
                     </form>

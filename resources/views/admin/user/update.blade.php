@@ -104,7 +104,7 @@
                             </div> --}}
 
                             <div class="mt-2 col-lg-6 offset-3">
-                                <button type="submit" class="btn btn-primary btn-sm m-3"> Save <i class="fas fa-envelope"></i></button>
+                                <button type="submit" class="btn btn-primary btn-sm m-3"> Update User <i class="fas fa-envelope"></i></button>
                             </div>
                         </div>
                     </form>

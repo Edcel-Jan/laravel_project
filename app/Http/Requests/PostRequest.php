@@ -25,7 +25,9 @@ class PostRequest extends FormRequest
     {
         return [
             'title' =>'required',
-            'content' => 'required'
+            'content' => 'required',
+            'category_id' =>'required',
+            'post_upload' => 'required'
         ];
     }
 }

@@ -43,39 +43,98 @@
 			<!-- Navbar Header -->
 				<nav class="navbar navbar-header navbar-expand-lg"  data-background-color='purple2'>
 					<div class="container-fluid">
-						<!-- <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 							<li class="nav-item dropdown hidden-caret">
 								<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 									<div class="avatar-sm">
-										<img src="../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
+									<img src="{{ asset(Auth::user()->photo ? Auth::user()->photo->path : 'no-image' ) }}" alt="..." class="avatar-img rounded-circle">
 									</div>
 								</a>
 								<ul class="dropdown-menu dropdown-user animated fadeIn">
 									<div class="dropdown-user-scroll scrollbar-outer">
 										<li>
 											<div class="user-box">
-												<div class="avatar-lg"><img src="../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+											<div class="avatar-lg"><img src="{{ asset(Auth::user()->photo ? Auth::user()->photo->path : 'no-image' ) }}" alt="image profile" class="avatar-img rounded"></div>
 												<div class="u-text">
-													<h4>Hizrian</h4>
-													<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+													<h4>{{ Auth::user()->name }}</h4>
+													<p class="text-muted">{{ Auth::user()->email }}</p>
 												</div>
 											</div>
 										</li>
-										<li>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">My Profile</a>
-											<a class="dropdown-item" href="#">My Balance</a>
-											<a class="dropdown-item" href="#">Inbox</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Account Setting</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Logout</a>
-										</li>
+										
+											@guest
+											<li class="nav-item">
+												<a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+											</li>
+											@if (Route::has('register'))
+												<li class="nav-item">
+													<a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+												</li>
+											@endif
+										@else
+										<div class="separator"></div>
+										<a  class="dropdown-item"  href="{{ route('logout') }}" 
+										onclick="event.preventDefault();
+													  document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+													  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+														@csrf
+													</form>
+											{{-- <li class="nav-item dropdown">
+												<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+													{{ Auth::user()->name }} <span class="caret"></span>
+												</a>
+				
+												<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+													<a class="dropdown-item" href="{{ route('logout') }}"
+													   onclick="event.preventDefault();
+																	 document.getElementById('logout-form').submit();">
+														
+													</a>
+				
+													<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+														@csrf
+													</form>
+												</div>
+											</li> --}}
+										@endguest
+										
+										
 									</div>
 								</ul>
 							</li>
-						</ul> -->
+						</ul>
 					</div>
+					{{-- <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul> --}}
 				</nav>
 			<!-- End Navbar -->
 
@@ -226,7 +285,9 @@
 									<!-- <span class="badge badge-success">4</span> -->
 								</a>
 							</li> --}}	
+							
 						</ul>
+						
 					<!-- content side -->
 
 				</div>
